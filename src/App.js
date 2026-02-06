@@ -581,7 +581,7 @@ function App() {
                   <h2 className="text-4xl font-bold mb-4 text-foreground"><span className="text-blue-500 font-bold text-5xl font-mono">|</span>Featured Projects</h2>
                   <p className="text-slate-600 dark:text-slate-400 mt-6">A selection of my recent works across web and mobile.</p>
                 </div>
-                <a href="http://github.com/victorayo234" target="_blank" className="text-blue-500 font-bold hover:text-blue-400 transition-colors border-b-2 border-blue-500/20 pb-1">
+                <a href="http://github.com/victorayo234" target="_blank" rel="noopener noreferrer" className="text-blue-500 font-bold hover:text-blue-400 transition-colors border-b-2 border-blue-500/20 pb-1">
                   View all projects
                 </a>
               </div>
