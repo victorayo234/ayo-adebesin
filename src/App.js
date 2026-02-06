@@ -36,7 +36,7 @@ const Reveal = ({ children, width = "fit-content" }) => {
   );
 };
 
-const Navbar = () => {
+const Navbar = ({ theme, toggleTheme }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -70,38 +70,62 @@ const Navbar = () => {
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="text-sm font-bold text-slate-300 hover:text-blue-400 transition-all relative group tracking-widest uppercase"
+                className="text-sm font-bold text-slate-400 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 transition-all relative group tracking-widest uppercase"
               >
                 {item}
                 <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
               </a>
             ))}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:scale-110 transition-all"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+              )}
+            </button>
           </div>
 
           {/* Hamburger Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-slate-300 hover:text-white transition-colors relative z-50 focus:outline-none"
-            aria-label="Toggle Menu"
-          >
-            <div className="w-6 h-5 flex flex-col justify-between items-end group">
-              <span className={`h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'w-6 translate-y-2 -rotate-45' : 'w-6'}`}></span>
-              <span className={`h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'w-4'}`}></span>
-              <span className={`h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'w-6 -translate-y-2 rotate-45' : 'w-5'}`}></span>
-            </div>
-          </button>
+          <div className="flex md:hidden items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 transition-all"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+              )}
+            </button>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 text-slate-600 dark:text-slate-300 hover:text-blue-500 dark:hover:text-white transition-colors relative z-50 focus:outline-none"
+              aria-label="Toggle Menu"
+            >
+              <div className="w-6 h-5 flex flex-col justify-between items-end group">
+                <span className={`h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'w-6 translate-y-2 -rotate-45' : 'w-6'}`}></span>
+                <span className={`h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'w-4'}`}></span>
+                <span className={`h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'w-6 -translate-y-2 rotate-45' : 'w-5'}`}></span>
+              </div>
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay - Outside Nav tag to avoid stacking context bugs */}
-      <div className={`fixed inset-0 bg-slate-950/98 backdrop-blur-2xl transition-all duration-500 z-[45] md:hidden ${isMenuOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}>
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 bg-white/98 dark:bg-slate-950/98 backdrop-blur-2xl transition-all duration-500 z-[45] md:hidden ${isMenuOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}>
         <div className="flex flex-col items-center justify-center h-full space-y-12">
           {["About", "Projects", "Skills", "Contact"].map((item, i) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
               onClick={() => setIsMenuOpen(false)}
-              className={`text-3xl font-black text-slate-300 hover:text-blue-500 transition-all transform tracking-tighter uppercase ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+              className={`text-3xl font-black text-slate-800 dark:text-slate-300 hover:text-blue-500 transition-all transform tracking-tighter uppercase ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
               style={{ transitionDelay: `${i * 100}ms` }}
             >
               {item}
@@ -118,7 +142,7 @@ const IconButton = ({ icon, href, label }) => (
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="p-3 glass-dark rounded-xl hover:text-blue-400 hover:border-blue-500/50 transition-all transform hover:-translate-y-1 group"
+    className="p-3 bg-slate-100 dark:glass-dark rounded-xl text-slate-700 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 hover:border-blue-500/50 transition-all transform hover:-translate-y-1 group border border-slate-200 dark:border-white/5"
     aria-label={label}
   >
     {icon}
@@ -126,24 +150,24 @@ const IconButton = ({ icon, href, label }) => (
 );
 
 const ProjectCard = ({ title, description, tags, link = "#" }) => (
-  <div className="group relative glass-dark rounded-3xl overflow-hidden hover:border-blue-500/50 transition-all duration-500 transform hover:-translate-y-3 shadow-2xl hover:shadow-blue-500/10 border border-white/5">
+  <div className="group relative glass-dark rounded-3xl overflow-hidden hover:border-blue-500/50 transition-all duration-500 transform hover:-translate-y-3 shadow-2xl hover:shadow-blue-500/10 border border-ui-border/50">
     <div className="p-7">
-      <h3 className="text-2xl font-extrabold mb-2 group-hover:text-blue-400 transition-colors tracking-tight">{title}</h3>
+      <h3 className="text-2xl font-extrabold mb-2 dark:group-hover:text-blue-400 group-hover:text-blue-600 transition-colors tracking-tight text-foreground">{title}</h3>
       <div className="flex flex-wrap gap-2 mb-5">
         {tags.map(tag => (
-          <span key={tag} className="text-[10px] uppercase tracking-[0.2em] font-black text-blue-400 bg-blue-400/5 border border-blue-400/20 px-3 py-1.5 rounded-lg backdrop-blur-md">
+          <span key={tag} className="text-[10px] uppercase tracking-[0.2em] font-black text-blue-500 dark:text-blue-400 bg-blue-500/5 border border-blue-500/20 px-3 py-1.5 rounded-lg backdrop-blur-md">
             {tag}
           </span>
         ))}
       </div>
-      <p className="text-slate-400/90 text-[14px] mb-5 leading-relaxed font-medium">
+      <p className="text-slate-600 dark:text-slate-400/90 text-[14px] mb-5 leading-relaxed font-medium">
         {description}
       </p>
       <a
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center text-sm font-bold text-white group/link"
+        className="inline-flex items-center text-sm font-bold text-slate-900 dark:text-white group/link"
       >
         <span className="relative">
           View Project
@@ -158,42 +182,43 @@ const ProjectCard = ({ title, description, tags, link = "#" }) => (
 );
 
 const FeatureCard = ({ icon, title, description }) => (
-  <div className="group relative glass-dark rounded-[2rem] p-8 border border-white/5 transition-all duration-500 hover:border-blue-500/50 hover:bg-blue-500/5 shadow-2xl overflow-hidden">
+  <div className="group relative glass-dark rounded-[2rem] p-8 border border-ui-border/50 transition-all duration-500 hover:border-blue-500/50 hover:bg-blue-500/5 shadow-2xl overflow-hidden">
     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     <div className="relative z-10">
-      <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-white/10 group-hover:scale-110 transition-transform duration-500">
+      <div className="w-14 h-14 bg-slate-100 dark:bg-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/5 group-hover:scale-110 transition-transform duration-500">
         {icon}
       </div>
-      <h3 className="text-2xl font-bold mb-3 text-slate-100 group-hover:text-blue-400 transition-colors">
+      <h3 className="text-2xl font-bold mb-3 text-foreground group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
         {title}
       </h3>
-      <p className="text-slate-400 leading-relaxed font-medium text-sm">
+      <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium text-sm">
         {description}
       </p>
     </div>
     {/* Bottom Accent Line */}
-    <div className="absolute bottom-0 left-0 w-full h-1 bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
+    <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
   </div>
 );
 
 const ApproachStep = ({ number, title, description, isLast }) => (
   <div className={`relative ${!isLast ? 'pb-10' : ''}`}>
     <div className="flex gap-6 items-start">
-      <div className="text-3xl font-bold text-slate-800 pt-1 leading-none min-w-[32px]">
+      <div className="text-3xl font-bold text-slate-300 dark:text-slate-800 pt-1 leading-none min-w-[32px]">
         {number}
       </div>
       <div>
-        <h3 className="text-xl font-bold text-slate-200 mb-2">
-          {title}: <span className="text-slate-400 font-medium text-base leading-relaxed">{description}</span>
+        <h3 className="text-xl font-bold text-slate-700 dark:text-slate-200 mb-2">
+          {title}: <span className="text-slate-500 dark:text-slate-400 font-medium text-base leading-relaxed">{description}</span>
         </h3>
       </div>
     </div>
   </div>
 );
 
-const SpaceBackground = () => {
+const SpaceBackground = ({ theme }) => {
   const [stars, setStars] = useState([]);
   const [shootingStars, setShootingStars] = useState([]);
+  const [motes, setMotes] = useState([]);
 
   useEffect(() => {
     // Generate stars
@@ -216,35 +241,69 @@ const SpaceBackground = () => {
       delay: `${Math.random() * 10}s`,
     }));
     setShootingStars(newShootingStars);
+
+    // Generate light motes for light mode - increased count for spiral effect
+    const newMotes = Array.from({ length: 40 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      size: `${Math.random() * 20 + 10}px`,
+      duration: `${Math.random() * 15 + 15}s`,
+      delay: `${Math.random() * -20}s`, // Random negative delay for staggered start
+    }));
+    setMotes(newMotes);
   }, []);
 
   return (
-    <div className="stars-container z-0">
-      {stars.map((star) => (
-        <div
-          key={star.id}
-          className="star"
-          style={{
-            left: star.left,
-            top: star.top,
-            width: star.size,
-            height: star.size,
-            "--twinkle-duration": star.duration,
-          }}
-        />
-      ))}
-      {shootingStars.map((s) => (
-        <div
-          key={s.id}
-          className="shooting-star"
-          style={{
-            right: s.right,
-            top: s.top,
-            "--shooting-duration": s.duration,
-            "--shooting-delay": s.delay,
-          }}
-        />
-      ))}
+    <div className={`stars-container z-0 transition-opacity duration-1000`}>
+      {/* Dark mode stars */}
+      <div className={`absolute inset-0 transition-opacity duration-1000 ${theme === 'dark' ? 'opacity-100' : 'opacity-0'}`}>
+        {stars.map((star) => (
+          <div
+            key={star.id}
+            className="star"
+            style={{
+              left: star.left,
+              top: star.top,
+              width: star.size,
+              height: star.size,
+              "--twinkle-duration": star.duration,
+              backgroundColor: 'white'
+            }}
+          />
+        ))}
+        {shootingStars.map((s) => (
+          <div
+            key={s.id}
+            className="shooting-star"
+            style={{
+              right: s.right,
+              top: s.top,
+              "--shooting-duration": s.duration,
+              "--shooting-delay": s.delay,
+              backgroundImage: 'linear-gradient(to left, #60a5fa, transparent)'
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Light mode motes */}
+      <div className={`absolute inset-0 transition-opacity duration-1000 ${theme === 'light' ? 'opacity-100' : 'opacity-0'}`}>
+        {motes.map((mote) => (
+          <div
+            key={mote.id}
+            className="light-mote"
+            style={{
+              left: mote.left,
+              top: mote.top,
+              width: mote.size,
+              height: mote.size,
+              "--mote-duration": mote.duration,
+              "--mote-delay": mote.delay,
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -268,7 +327,7 @@ const TechOrbit = ({ skills }) => {
   return (
     <div className="relative h-[500px] md:h-[650px] w-full flex items-center justify-center overflow-hidden px-4">
       {/* Central Core - React */}
-      <div className="relative z-10 w-24 h-24 md:w-32 md:h-32 bg-slate-900/50 rounded-full flex items-center justify-center border-2 border-blue-500/30 backdrop-blur-xl animate-atmosphere shadow-[0_0_50px_rgba(59,130,246,0.2)]">
+      <div className="relative z-10 w-24 h-24 md:w-32 md:h-32 bg-slate-100 dark:bg-slate-900/50 rounded-full flex items-center justify-center border-2 border-blue-500/30 backdrop-blur-xl animate-atmosphere shadow-[0_0_50px_rgba(59,130,246,0.2)]">
         <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-2xl animate-pulse"></div>
         <img
           src="https://skillicons.dev/icons?i=react"
@@ -336,21 +395,21 @@ const DailyLog = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {/* Live Clock Card */}
-      <div className="lg:col-span-1 glass-dark rounded-3xl p-6 border border-white/5 flex flex-col justify-between group hover:border-blue-500/30 transition-all">
-        <div className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-4">Current Local Time / NG</div>
-        <div className="text-4xl font-mono font-bold text-blue-400">
+      <div className="lg:col-span-1 glass-dark rounded-3xl p-6 border border-ui-border/50 flex flex-col justify-between group hover:border-blue-500/30 transition-all">
+        <div className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest mb-4">Current Local Time / NG</div>
+        <div className="text-4xl font-mono font-bold text-blue-600 dark:text-blue-400">
           {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
         </div>
-        <div className="mt-4 text-[12px] text-slate-500 font-medium">Checking from Lagos, Nigeria</div>
+        <div className="mt-4 text-[12px] text-slate-400 dark:text-slate-500 font-medium">Checking from Lagos, Nigeria</div>
       </div>
 
       {logItems.map((item, i) => (
-        <div key={i} className="glass-dark rounded-3xl p-6 border border-white/5 hover:border-blue-500/30 transition-all group">
+        <div key={i} className="glass-dark rounded-3xl p-6 border border-ui-border/50 hover:border-blue-500/30 transition-all group">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">{item.label}</span>
+            <span className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">{item.label}</span>
             <span className="text-xl">{item.icon}</span>
           </div>
-          <div className="text-lg font-bold text-slate-200 group-hover:text-blue-400 transition-colors uppercase tracking-tight">
+          <div className="text-lg font-bold text-slate-800 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors uppercase tracking-tight">
             {item.value}
           </div>
         </div>
@@ -360,9 +419,24 @@ const DailyLog = () => {
 };
 
 function App() {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -423,8 +497,8 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans text-slate-50 selection:bg-blue-500/30">
-      <Navbar />
+    <div className="min-h-screen bg-background font-sans text-foreground selection:bg-blue-500/30 transition-colors duration-500">
+      <Navbar theme={theme} toggleTheme={toggleTheme} />
 
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 z-[60] bg-transparent">
@@ -438,16 +512,16 @@ function App() {
         {/* About Section */}
         <Reveal width="100%">
           <section id="about" className="relative pt-24 pb-20 px-6 overflow-hidden">
-            <SpaceBackground />
+            <SpaceBackground theme={theme} />
             <div className="max-w-4xl mx-auto text-center relative z-10">
               <span className="inline-block py-1 px-3 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-8">
                 Available for new opportunities
               </span>
-              <h1 className="text-5xl md:text-7xl font-bold mb-10 tracking-tight">
+              <h1 className="text-5xl md:text-7xl font-bold mb-10 tracking-tight text-foreground">
                 Hi, I'm <span className="text-blue-500">Ayo Adebesin</span>
               </h1>
-              <h2 className="pb-5 text-3xl md:text-4xl font-semibold">A Web Developer + UI/UX Designer</h2>
-              <p className="text-xl md:text-2xl text-slate-400 mb-12 leading-relaxed max-w-3xl mx-auto">
+              <h2 className="pb-5 text-3xl md:text-4xl font-semibold text-slate-800 dark:text-white">A Web Developer + UI/UX Designer</h2>
+              <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 mb-12 leading-relaxed max-w-3xl mx-auto">
                 I bring ideas to life on the web, blending sleek interfaces with smooth user experiences to create meaningful digital interactions that suits the user's preference and liking.
               </p>
 
@@ -487,11 +561,11 @@ function App() {
           <section id="log" className="pt-20 pb-10 px-6">
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col mb-12">
-                <h2 className="text-4xl font-bold mb-4 flex items-center gap-4">
+                <h2 className="text-4xl font-bold mb-4 flex items-center gap-4 text-foreground">
                   <span className="text-blue-500 font-bold text-5xl font-mono">|</span>
                   Status <span></span>
                 </h2>
-                <p className="text-slate-400">A live snapshot of my current professional orbit.</p>
+                <p className="text-slate-600 dark:text-slate-400">A live snapshot of my current professional orbit.</p>
               </div>
               <DailyLog />
             </div>
@@ -500,14 +574,14 @@ function App() {
 
         {/* Projects Section */}
         <Reveal width="100%">
-          <section id="projects" className="py-20 px-6 bg-slate-900/30">
+          <section id="projects" className="py-20 px-6 bg-slate-50 dark:bg-slate-900/30 transition-colors duration-500">
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
                 <div>
-                  <h2 className="text-4xl font-bold mb-4"><span className="text-blue-500 font-bold text-5xl font-mono">|</span>Featured Projects</h2>
-                  <p className="text-slate-400 mt-6">A selection of my recent works across web and mobile.</p>
+                  <h2 className="text-4xl font-bold mb-4 text-foreground"><span className="text-blue-500 font-bold text-5xl font-mono">|</span>Featured Projects</h2>
+                  <p className="text-slate-600 dark:text-slate-400 mt-6">A selection of my recent works across web and mobile.</p>
                 </div>
-                <a href="http://github.com/victorayo234" className="text-blue-500 font-bold hover:text-blue-400 transition-colors border-b-2 border-blue-500/20 pb-1">
+                <a href="http://github.com/victorayo234" target="_blank" className="text-blue-500 font-bold hover:text-blue-400 transition-colors border-b-2 border-blue-500/20 pb-1">
                   View all projects
                 </a>
               </div>
@@ -526,10 +600,10 @@ function App() {
                   link="https://ava-profile.vercel.app"
                 />
                 <ProjectCard
-                  title="Cloud Management Platform"
-                  description="Internal tool for monitoring cloud infrastructure and system health."
-                  tags={["TypeScript", "Node.js", "AWS"]}
-                  link="#"
+                  title=" Easybank"
+                  description="A next generation modern and visually engaging digital banking landing page which features a fully responsive layout, smooth interface sections, and showcases key banking features in a clean and user-friendly design. "
+                  tags={["HTML", "CSS", "JAVASCRIPT"]}
+                  link="https://easybank-one-project.vercel.app"
                 />
                 <ProjectCard
                   title="Cloud Management Platform"
@@ -551,10 +625,10 @@ function App() {
                 Key Features
               </span>
               <div className="max-w-3xl mb-20">
-                <h2 className="text-4xl md:text-5xl font-black mb-8 tracking-tight text-white font-bold">
+                <h2 className="text-4xl md:text-5xl font-black mb-8 tracking-tight text-slate-900 dark:text-white font-bold">
                   Quality in Every Detail
                 </h2>
-                <p className="text-lg text-slate-400 font-medium leading-relaxed">
+                <p className="text-lg text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
                   Delivering excellence through innovative solutions and meticulous attention to detail
                 </p>
               </div>
@@ -589,9 +663,8 @@ function App() {
         <Reveal width="100%">
           <section id="skills" className="py-32 px-6 overflow-hidden">
             <div className="max-w-7xl mx-auto">
-              <h2 className="text-4xl font-bold mb-8"><span className="text-blue-500 font-bold text-5xl font-mono">|</span>Current Skills</h2>
-              <p className="text-slate-400 mb-16 max-w-2xl text-left">Here are the tools and technologies I use to turn creative ideas into functional, user-friendly digital experiences — from design to deployment, each one helps bring clarity, performance, and style to the final product.
-
+              <h2 className="text-4xl font-bold mb-8 text-foreground"><span className="text-blue-500 font-bold text-5xl font-mono">|</span>Current Skills</h2>
+              <p className="text-slate-600 dark:text-slate-400 mb-16 max-w-2xl text-left">Here are the tools and technologies I use to turn creative ideas into functional, user-friendly digital experiences — from design to deployment, each one helps bring clarity, performance, and style to the final product.
               </p>
               <TechOrbit skills={skills} />
             </div>
@@ -604,11 +677,11 @@ function App() {
             <div className="max-w-7xl mx-auto">
               {/* Header at top-left */}
               <div className="max-w-3xl mb-20 text-left">
-                <h2 className="text-5xl md:text-6xl font-semibold mb-8 tracking-tighter text-white leading-none ls-6">
+                <h2 className="text-5xl md:text-6xl font-semibold mb-8 tracking-tighter text-slate-900 dark:text-white leading-none ls-6">
                   My Web Development <br />
                   Approach
                 </h2>
-                <p className="text-lg text-slate-400 font-medium leading-relaxed max-w-2xl">
+                <p className="text-lg text-slate-600 dark:text-slate-400 font-medium leading-relaxed max-w-2xl">
                   I follow a structured approach to delivering high-quality websites that cater to my clients' needs. From gathering requirements to product launch and ongoing maintenance, each step is essential to the success of the project.
                 </p>
               </div>
@@ -617,7 +690,7 @@ function App() {
               <div className="grid lg:grid-cols-2 gap-20 items-start">
                 {/* Left Column: Image */}
                 <div className="relative group">
-                  <div className="relative rounded-[2rem] overflow-hidden bg-slate-900 shadow-2xl">
+                  <div className="relative rounded-[2rem] overflow-hidden bg-slate-100 dark:bg-slate-900 shadow-2xl">
                     <img
                       src="/premium_desk_setup_hero_1770325919796.png"
                       alt="Development Workspace"
@@ -628,7 +701,7 @@ function App() {
 
                 {/* Right Column: Steps */}
                 <div className="lg:pt-4">
-                  <div className="text-[14px] font-black text-slate-400 uppercase tracking-[0.3em] mb-10">Steps</div>
+                  <div className="text-[14px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] mb-10">Steps</div>
                   <div className="space-y-2">
                     <ApproachStep
                       number="1"
@@ -662,44 +735,44 @@ function App() {
         <Reveal width="100%">
           <section id="contact" className="py-32 px-6">
             <div className="max-w-4xl mx-auto">
-              <div className="glass rounded-[2rem] p-12 relative overflow-hidden border border-white/5">
+              <div className="glass rounded-[2rem] p-12 relative overflow-hidden border border-ui-border/50 transition-colors duration-500">
                 <div className="text-center mb-12">
-                  <h2 className="text-4xl font-bold mb-4">Let's work together.</h2>
-                  <p className="text-slate-400">Ready to start your next project? Drop me a message below!</p>
+                  <h2 className="text-4xl font-bold mb-4 text-foreground">Let's work together.</h2>
+                  <p className="text-slate-600 dark:text-slate-400">Ready to start your next project? Drop me a message below!</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-400 uppercase tracking-widest px-2">Name</label>
+                    <label className="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest px-2">Name</label>
                     <input
                       required
                       type="text"
                       placeholder="Michael Scoffield"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-slate-900/50 border border-slate-800 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-500 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-400 uppercase tracking-widest px-2">Email</label>
+                    <label className="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest px-2">Email</label>
                     <input
                       required
                       type="email"
                       placeholder="mike@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-slate-900/50 border border-slate-800 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-500 transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground"
                     />
                   </div>
                   <div className="space-y-2 md:col-span-2">
-                    <label className="text-sm font-bold text-slate-400 uppercase tracking-widest px-2">Message</label>
+                    <label className="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest px-2">Message</label>
                     <textarea
                       required
                       rows="5"
                       placeholder="Share your ideas..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full bg-slate-900/50 border border-slate-800 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-500 transition-all resize-none"
+                      className="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-500 transition-all resize-none text-foreground"
                     ></textarea>
                   </div>
                   <div className="md:col-span-2 text-center pt-4">
@@ -720,13 +793,13 @@ function App() {
         </Reveal>
       </main>
 
-      <footer className="py-12 border-t border-slate-800/50 px-6">
-        <div className="max-w-7xl mx-auto flex-col md:flex-row justify-between items-center gap-8">
+      <footer className="py-12 border-t border-ui-border/50 px-6 transition-colors duration-500">
+        <div className="max-w-7xl mx-auto flex-col md:flex-row justify-between items-center gap-8 text-foreground">
           <p className="text-center text-5xl w-4xl mb-4 font-serif">
             " I’m always open to exciting collaborations, freelance gigs, or full-time opportunities. Let’s build something impactful."
           </p>
           <p className="text-center mb-8">- Ayo Adebesin</p>
-          <p className="text-slate-400 text-sm italic text-center flex justify-center align-center">© {new Date().getFullYear()} Ayo Adebesin. Made with passion & precision.</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm italic text-center flex justify-center align-center">© {new Date().getFullYear()} Ayo Adebesin. Made with passion & precision.</p>
 
         </div>
       </footer>
